@@ -7,6 +7,16 @@ defmodule D1 do
     count_increasing(numbers)
   end
 
+  def one_improved() do
+    numbers = Read_File_Utils.read_file("d1.txt")
+              |> Enum.map(&String.to_integer/1)
+
+    (for idx <- 0..Enum.count(numbers) - 1,
+         Enum.at(numbers, idx) > Enum.at(numbers, idx - 1) and idx > 0,
+         do: number)
+    |> Enum.count()
+  end
+
   def count_increasing(list) do
     [head | tail] = list
     Enum.reduce(
