@@ -13,7 +13,7 @@ defmodule D1 do
 
     (for idx <- 0..Enum.count(numbers) - 1,
          Enum.at(numbers, idx) > Enum.at(numbers, idx - 1) and idx > 0,
-         do: number)
+         do: idx)
     |> Enum.count()
   end
 
