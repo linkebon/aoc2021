@@ -53,10 +53,21 @@ defmodule D2 do
     |> Enum.reduce(
          {0, 0, 0},
          fn instruction,
-            acc -> handle_instruction_with_aim(instruction, acc)
+            acc -> instruction(instruction, acc)
          end
        )
     |> (fn {x, y, _} -> x * y end).()
   end
 
+  def instruction([instruction, number], position) when instruction == "forward" do
+    horizontal_pos = (elem(position, 0) + number)
+    depth = elem(position, 1) + (elem(position, 2) * number)
+    {horizontal_pos, depth, elem(position, 2)}
+  end
+
+  def instruction([instruction, number], position) when instruction == "down",
+      do: {elem(position, 0), elem(position, 1), elem(position, 2) + number}
+
+  def instruction([instruction, number], position) when instruction == "up",
+      do: {elem(position, 0), elem(position, 1), elem(position, 2) - number}
 end
