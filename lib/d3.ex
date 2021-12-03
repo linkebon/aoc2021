@@ -8,27 +8,21 @@ defmodule D3 do
     entries_count = Enum.count(input)
                     |> IO.inspect()
 
-    parsed_gamma = input
-                   |> Enum.zip()
-                   |> Enum.map(&Tuple.to_list/1)
-                   |> IO.inspect()
-                   |> Enum.map(&convert_bit_to_gamma_bit(&1, entries_count))
-
-    parsed_epsilon = input
-                     |> Enum.zip()
-                     |> Enum.map(&Tuple.to_list/1)
-                     |> IO.inspect()
-                     |> Enum.map(&convert_bit_to_epsilon_bit(&1, entries_count))
-
-    gamma = parsed_gamma
+    gamma = input
+            |> Enum.zip()
+            |> Enum.map(&Tuple.to_list/1)
+            |> IO.inspect()
+            |> Enum.map(&convert_bit_to_gamma_bit(&1, entries_count))
             |> Enum.join()
             |> String.to_integer(2)
-            |> IO.inspect(label: "gamma")
 
-    epsilon = parsed_epsilon
+    epsilon = input
+              |> Enum.zip()
+              |> Enum.map(&Tuple.to_list/1)
+              |> IO.inspect()
+              |> Enum.map(&convert_bit_to_epsilon_bit(&1, entries_count))
               |> Enum.join()
               |> String.to_integer(2)
-              |> IO.inspect(label: "epsilon")
 
     epsilon * gamma
   end
