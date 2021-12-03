@@ -23,6 +23,37 @@ defmodule D3 do
     epsilon * gamma
   end
 
+  def two() do
+    input = Read_File_Utils.read_file("d3.txt")
+            |> Enum.map(&String.graphemes/1)
+
+    o2 = calc_ratings(input, &find_most_common_bit/1)
+         |> String.to_integer(2)
+    co2 = calc_ratings(input, &find_least_common_bit/1)
+          |> String.to_integer(2)
+    co2 * o2
+  end
+
+  def calc_ratings(binaries, calc_function, bit \\ 0) do
+    if(Enum.count(binaries) == 1) do
+      Enum.at(binaries, 0)
+      |> Enum.join()
+    else
+      entries = Enum.count(binaries)
+      structured = binaries
+                   |> Enum.zip()
+                   |> Enum.map(&Tuple.to_list/1)
+
+      bit_to_save = calc_function.(Enum.at(structured, bit))
+
+      calc_ratings(
+        Enum.filter(binaries, fn row -> Enum.at(row, bit) == bit_to_save end),
+        calc_function,
+        bit + 1
+      )
+    end
+  end
+
   def find_most_common_bit(list) do
     ones_count = Enum.count(list, fn x -> x == "1" end)
     zero_count = Enum.count(list, fn x -> x == "0" end)
@@ -51,58 +82,6 @@ defmodule D3 do
       else
         "0"
       end
-    end
-  end
-
-  def two() do
-    input = Read_File_Utils.read_file("d3.txt")
-            |> Enum.map(&String.graphemes/1)
-
-    o2 = calc_o2(input)
-         |> String.to_integer(2)
-    co2 = calc_co2(input)
-          |> String.to_integer(2)
-    co2 * o2
-  end
-
-  def calc_o2(binaries, bit \\ 0) do
-    if(Enum.count(binaries) == 1) do
-      Enum.at(binaries, 0)
-      |> Enum.join()
-    else
-      entries = Enum.count(binaries)
-      structured = binaries
-                   |> Enum.zip()
-                   |> Enum.map(&Tuple.to_list/1)
-
-      bit_to_save = find_most_common_bit(Enum.at(structured, bit))
-                    |> IO.inspect(label: "to save")
-
-      calc_o2(
-        Enum.filter(binaries, fn row -> Enum.at(row, bit) == bit_to_save end)
-        |> IO.inspect(),
-        bit + 1
-      )
-    end
-  end
-
-  def calc_co2(binaries, bit \\ 0) do
-    if(Enum.count(binaries) == 1) do
-      Enum.at(binaries, 0)
-      |> Enum.join()
-    else
-      structured = binaries
-                   |> Enum.zip()
-                   |> Enum.map(&Tuple.to_list/1)
-
-      bit_to_save = find_least_common_bit(Enum.at(structured, bit))
-                    |> IO.inspect(label: "to save")
-
-      calc_co2(
-        Enum.filter(binaries, fn row -> Enum.at(row, bit) == bit_to_save end)
-        |> IO.inspect(),
-        bit + 1
-      )
     end
   end
 end
