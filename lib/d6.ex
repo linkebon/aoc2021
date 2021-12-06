@@ -17,7 +17,7 @@ defmodule D6 do
     Enum.reduce(
       1..80,
       cycles,
-      fn day, acc ->
+      fn _day, acc ->
         zero_count = acc
                      |> Map.get("0")
 
@@ -61,7 +61,7 @@ defmodule D6 do
     Enum.reduce(
       1..256,
       cycles,
-      fn day, acc ->
+      fn _day, acc ->
         zero_count = acc
                      |> Map.get("0")
 
