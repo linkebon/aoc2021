@@ -26,9 +26,38 @@ defmodule D7 do
     |> calc_least_fuel_cost
   end
 
+  def two() do
+    input = Read_File_Utils.read_file("d7.txt", ~r/,/)
+            |> Enum.map(&String.to_integer/1)
+
+    Enum.reduce(
+      # the points to calculate fuel for
+      Enum.min(input) + 1..Enum.max(input) - 1,
+      %{},
+      fn i, acc ->
+        # add to map in format %{point: [fuel_cost_for_crab_position]}
+        acc
+        |> Map.put(
+             i,
+             Enum.reduce(
+               input,
+               [],
+               fn crab_pos, fuel_cost_list ->
+                 n = calc_distance_to_position(crab_pos, i)
+                 # calculate termial value for distance
+                 [div(n * (n + 1), 2) | fuel_cost_list]
+               end
+             )
+           )
+      end
+    )
+    |> calc_least_fuel_cost
+  end
+
+
   def calc_least_fuel_cost(fuel_cost_map) do
     fuel_cost_map
-    |> Enum.(
+    |> Enum.map(
          fn {_point, fuel_cost_list} ->
            Enum.sum(fuel_cost_list)
          end
