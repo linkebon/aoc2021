@@ -28,8 +28,8 @@ defmodule D7 do
 
   def calc_least_fuel_cost(fuel_cost_map) do
     fuel_cost_map
-    |> Enum.map(
-         fn {point, fuel_cost_list} ->
+    |> Enum.(
+         fn {_point, fuel_cost_list} ->
            Enum.sum(fuel_cost_list)
          end
        )
